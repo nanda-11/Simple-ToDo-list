@@ -1,0 +1,57 @@
+import tkinter
+import tkinter.messagebox
+import pickle
+
+root = tkinter.Tk()
+root.title("To-Do List")
+
+#Method to add task, delete task, save task, load task and exit the app
+
+def add_task():
+    task = enter_task.get()
+    listbox_tasks.insert(tkinter.END, task)
+    enter_task.delete(0, tkinter.END)
+
+def delete_task():
+    task_to_delete = listbox_tasks.curselection()
+    listbox_tasks.delete(task_to_delete)
+
+def save_task():
+    task = listbox_tasks.get(0, listbox_tasks.size())
+    pickle.dump(task, open("To-Do list.dat", "wb"))
+
+def load_task():
+    task = pickle.load(open("To-Do list.dat", "rb"))
+    listbox_tasks.delete(0, tkinter.END)
+    for t in task:
+        listbox_tasks.insert(tkinter.END, t)
+
+def exit_app():
+    root.quit()
+
+
+#GUI codes below
+
+listbox_tasks = tkinter.Listbox(root, height=20, width=60)
+listbox_tasks.pack()
+
+enter_task = tkinter.Entry(root, width=60)
+enter_task.pack()
+
+button_add_task = tkinter.Button(root, text='Add task', width=56, command=add_task)
+button_add_task.pack()
+
+button_delete_task = tkinter.Button(root, text='Delete task', width=56, command=delete_task)
+button_delete_task.pack()
+
+button_save_task = tkinter.Button(root, text='Save task', width=56, command=save_task)
+button_save_task.pack()
+
+button_load_task = tkinter.Button(root, text='Load task', width=56, command=load_task)
+button_load_task.pack()
+
+button_exit = tkinter.Button(root, text='Exit To-Do List', width=56, command=exit_app)
+button_exit.pack()
+
+
+root.mainloop()
